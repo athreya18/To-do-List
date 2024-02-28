@@ -4,6 +4,7 @@ type TaskList = {
     title: string,
     description: string
 }
+
 export const useTaskList = create((set) => ({
     createdTasks: [],
     updateTask: (title: string, description: string) => {
