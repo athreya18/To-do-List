@@ -21,6 +21,15 @@ export const useTaskList = create(
           ],
         }));
       },
+      editTodoTasks: (title: string, description: string, index: number) => {
+        set((state: any) => ({
+          createdTasks:  state.createdTasks.map((task: any, i: number) =>
+          index === i
+            ? ({ ...state.createdTasks, title: title, description: description } as TaskList)
+            : task
+        ),
+        }));
+      },
       deleteTask: (title: string) => {
         set((state: any) => ({
           createdTasks: state.createdTasks.filter(
