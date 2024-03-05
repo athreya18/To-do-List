@@ -1,0 +1,1 @@
+This next.js project is created using create-next-app. The components are extracted from a component library-ShadCN. To store the data that is in session, a session storage with the help of a middleware is used in the store.js file.
