@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useTaskList } from "@/store/store";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import iconimg from "../components/images/Group-1.svg";
 import john from "../components/images/john.svg";
 import list from "../components/images/list.svg";
@@ -20,6 +20,14 @@ export default function Home() {
   const [tasks, setTasks] = useState<Array<{ title: string, desc: string }>>([]);
   const [title, setTitle] = useState<string>("")
   const [desc, setDesc] = useState<string >("");
+
+  useEffect(()=>{
+console.log("++++++++++++++++++++++++++")
+  },[])
+
+  useEffect(()=>{
+console.log({'home':createdTasks})
+  },[createdTasks])
 
   const openSheet = () => {
     setIsSheetOpen(true);
