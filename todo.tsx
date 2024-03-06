@@ -11,9 +11,12 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogFooter,
-  } from "@/components/ui/dialog"
+    DialogClose,
+} from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from "@/components/ui/sheet";
-import ss from "../images/ss.svg";
+import ss from "../images/ss.svg"
+import { close } from 'inspector';
+import { useEffect } from 'react';
 
 type TaskList = {
     title: string;
@@ -21,14 +24,17 @@ type TaskList = {
 };
 
 const Todos = (props: any) => {
+    console.log(":::::::::::::::::::::::::::::::::::")
     const { updateTask, createdTasks, deleteTask, editTodoTasks }: any = useTaskList();
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [tasks, setTasks] = useState<Array<{ title: string, desc: string }>>([]);
     const [selectedTaskIndex, setSelectedTaskIndex] = useState<number>(0);
     const [title, setTitle] = useState<string>("")
-    const [openDialog, setopenDialog] = useState<boolean>(false)
     const [desc, setDesc] = useState<string>("");
 
+    useEffect(() => {
+        console.log({ createdTasks })
+    }, [createdTasks])
 
     const openSheet = () => {
         setIsSheetOpen(true);
@@ -42,29 +48,30 @@ const Todos = (props: any) => {
     };
 
     const update = () => {
-      // if (selectedTaskIndex !== null) {
+        debugger
         editTodoTasks(title, desc, selectedTaskIndex);
         setSelectedTaskIndex(0);
-        // }
-        closeSheet();
-    };    
-    
+        closeDialog();
+    };
+
     const createTask = (): void => {
         updateTask(title, desc);
         setTitle('');
         setDesc('');
+        closeSheet();
     };
-    
 
     const editTasks = (index: number) => {
         setSelectedTaskIndex(index);
         setTitle(createdTasks[index].title);
         setDesc(createdTasks[index].description);
-        setopenDialog(true)
+        // setopenDialog(true);
         // openSheet();
     };
 
-    console.log({ openDialog })
+    const closeDialog = () => {
+        closeSheet();
+    };
     return (
         <div>
             {createdTasks.length !== 0 && (
@@ -77,17 +84,15 @@ const Todos = (props: any) => {
                         </Button>
                         {createdTasks.length !== 0 && createdTasks.map((task: TaskList, index: number) => (
                             <div key={index} className='mt-5 rounded-2xl bg-opacity-100 bg-[rgba(245,247,249,1)] flex flex-col justify-center items-center h-20 w-96 relative'>
-                                <div onClick={() => deleteTask(task.title)} className="absolute top-0 right-0 bg-red-500 text-white px-1 py-0.5 cursor-pointer">
+                                <div onClick={() => deleteTask(task.title)} className="absolute top-0 right-0 bg-red-500 text-white px-1 py-0.75 hover:bg-red-600 cursor-pointer">
                                     X
                                 </div>
-                                <Dialog>
+                                <Dialog >
                                     <DialogTrigger asChild>
-                                        <Button variant="outline" className="bg-blue-500 text-white px-1 py-0.5 rounded-md hover:bg-blue-600 mt-5 self-start" onClick={() => {editTasks(index)}}>
+                                        <Button variant="outline" className="bg-blue-500 text-white px-1 py-0.5 rounded-md hover:bg-blue-600 mt-5 self-start" onClick={() => { editTasks(index) }}>
                                             Edit
                                         </Button>
                                     </DialogTrigger>
-                                    {/* <DialogTrigger asChild> */}
-                                    {/* <Button variant="outline">Edit Profile</Button> */}
                                     <DialogContent className="sm:max-w-[425px]">
                                         <DialogHeader>
                                             <DialogTitle>Edit profile</DialogTitle>
@@ -110,20 +115,18 @@ const Todos = (props: any) => {
                                             </div>
                                         </div>
                                         <DialogFooter>
-                                            <Button type="submit" onClick={update} >Save changes</Button>
+                                            <DialogClose>
+                                                <Button type="submit" onClick={update} >Save changes</Button>
+                                            </DialogClose>
                                         </DialogFooter>
                                     </DialogContent>
-                                    {/* </DialogTrigger> */}
                                 </Dialog>
 
-
-                                {/* <DialogComponent title={title} desc={desc} setopenDialog={setopenDialog} selectedTaskIndex={selectedTaskIndex}/> */}
-                                {/* } */}
-                                <dialog />
                                 <div className=''>
                                     <p className='pl-5 flex flex-row justify-center items-center font-bold'>Title: {task.title}</p>
                                     <p className='pl-5 pb-7 flex flex-row justify-center items-center '>Description: {task.description}</p>
                                 </div>
+                
                             </div>
                         ))}
                     </div>
@@ -145,6 +148,7 @@ const Todos = (props: any) => {
                             <div>
                                 <h3 className=" mt-3 font=['Urbanist'] text-sm font-medium leading-17 tracking-normal text-left text-indigo-800 w-27 h-17">Upload Screenshot</h3>
                                 <div className="w-32 h-32  rounded-md border-dotted border-1 border-black flex flex-row items-center justify-center">
+                                    {/* <Image src={ss} width={20} height={20} alt=""></Image> */}
                                 </div>
                             </div>
                             <div className="flex flex-row justify-between align-center pt-8 w-full">
@@ -161,3 +165,4 @@ const Todos = (props: any) => {
 }
 
 export default Todos;
+
